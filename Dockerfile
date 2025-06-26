@@ -1,8 +1,11 @@
-FROM maven:3.8.6-jdk-8
+# Use JDK-only image for runtime (smaller size)
+FROM eclipse-temurin:17-jdk
 
+# Create working directory
 WORKDIR /app
-COPY . /app
 
-RUN mvn clean package
+# Copy built JAR from the build stage
+COPY --from=build /app/target/*.jar app.jar
 
-CMD ["java", "-jar", "target/maven-web-application.war"]
+# Command to run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
