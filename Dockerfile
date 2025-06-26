@@ -5,15 +5,8 @@ WORKDIR /app
 
 COPY . .
 
+# Debug output before the actual command
+RUN ls -la /app && cat pom.xml || true
+
+# Run the Maven package step
 RUN mvn clean package -DskipTests
-
-# ---- Run Stage ----
-FROM eclipse-temurin:17-jdk
-
-WORKDIR /app
-
-# Copy built JAR/WAR from build stage
-COPY --from=build /app/target/*.jar app.jar
-
-# Command to run the application (for a Spring Boot JAR)
-CMD ["java", "-jar", "app.jar"]
