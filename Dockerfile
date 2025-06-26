@@ -9,4 +9,5 @@ COPY . .
 RUN ls -la /app && cat pom.xml || true
 
 # Run the Maven package step
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -e -X
+
